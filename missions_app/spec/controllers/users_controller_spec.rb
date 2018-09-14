@@ -53,7 +53,18 @@ RSpec.describe UsersController, type: :controller do
       expect(response).to render_template(:index)
     end
   end
-  # '#destroy removes the user from the database'
+  
+  describe 'DELETE #destroy' do
+    it 'removes the user from the database and renders sign in page' do
+      to_query = user.id
+      delete :destroy, params: {id: user.id}
+      expect(response).to render_template(:new)
+      query = User.find_by(id: to_query)
+      expect(query).to be_nil
+    end
+  end
+  
+      
   # '#edit renders the user edit page'
   # '#update changes the user\'s info in the database'
 end
