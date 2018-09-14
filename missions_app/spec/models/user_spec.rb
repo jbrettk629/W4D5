@@ -12,6 +12,7 @@ require 'spec_helper'
 # end 
 
 RSpec.describe User, type: :model do
+  ron = User.create(username: 'rw', email: 'rw@email.com', password: 'starwars')
   it { should validate_presence_of(:username)}
   it { should validate_presence_of(:email)}
   it { should validate_length_of(:password).is_at_least(6)}
@@ -41,10 +42,16 @@ RSpec.describe User, type: :model do
     end
     
     it 'uses bcrypt to create a password_digest' do 
-        harry = User.new(username: 'hp', email: 'hp@email.com', password: 'starwars')
-        expect(harry.password_digest).not_to be_nil
         
         expect(BCrypt::Password).to receive(:create).with('starwars')
+        User.new(username: 'hp', email: 'hp@email.com', password: 'starwars')
     end  
-  end   
+  end
+  
+  # describe 'find user by credentials' do
+  #   it 'finds a user with username and password' do
+  #     ron = User.create(username: 'rw', email: 'rw@email.com', password: 'starwars')  
+  #     expect(User.find_by_credentials('rw', 'starwars')).to eq(ron)
+  #   end
+  # end
 end
